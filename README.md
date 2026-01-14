@@ -8,10 +8,25 @@ The system manages subscribers, their subscription plans, and applies filters an
 ---
 
 ## Features
-- Manage subscribers and subscription plans
-- Store and retrieve subscribers using a DAO
-- Apply business rules using functional interfaces
-- Practice clean separation of concerns
-- Demonstrate functional programming concepts
+- Display Active Subscriber
+- Display Expiring Subscription
+- Display Active and Expiring Subscriber
+- Display Subscriber by Plan
+- Display Paying Subscriber
+- Extend Subscription for Paying Subscribers
+- Deactivate free Subscriber
 
 ---
+
+## Optional Features
+
+Added test file for JUnit test scenarios
+- Show Active Subscribers
+- Show Expiring Subscriptions
+- Show Active and Expiring Subscribers
+- Extend Subscriptions for Paying Subscribers
+- Deactivate Expired Free Subscribers
+- Filter Subscribers by Plan
+
+---
+
