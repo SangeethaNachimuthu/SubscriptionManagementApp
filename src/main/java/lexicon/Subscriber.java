@@ -36,18 +36,6 @@ public class Subscriber {
         return monthsRemaining;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPlan(Plan plan) {
-        this.plan = plan;
-    }
-
     public void setActive(boolean active) {
         this.active = active;
     }

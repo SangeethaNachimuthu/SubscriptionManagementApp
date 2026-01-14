@@ -1,9 +1,9 @@
 package lexicon;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main {
+
+    private static final SubscriberProcessor processor = new SubscriberProcessor();
 
     public static SubscriberFilter activeSubscriber = (Subscriber::isActive);
     public static SubscriberFilter expiringSubscription = (subscriber ->
@@ -19,38 +19,37 @@ public class Main {
     public static SubscriberAction deactivateSubscriber = subscriber ->
             subscriber.setActive(false);
 
-    private static final SubscriberProcessor processor = new SubscriberProcessor();
 
     void main() {
 
-        List<Subscriber> subscriberList = new ArrayList<>();
+        SubscriberDAO dao = new SubscriberDAO();
 
-        subscriberList.add(new Subscriber(1, "abc@gmail.com", true, Plan.BASIC, 5));
-        subscriberList.add(new Subscriber(2, "glr@gmail.com", false, Plan.FREE, 8));
-        subscriberList.add(new Subscriber(3, "ali@gmail.com", false, Plan.BASIC, 0));
-        subscriberList.add(new Subscriber(4, "paul@gmail.com", true, Plan.PRO, 1));
-        subscriberList.add(new Subscriber(5, "lily@gmail.com", true, Plan.BASIC, 12));
-        subscriberList.add(new Subscriber(31, "ali@gmail.com", false, Plan.FREE, 0));
+        dao.save(new Subscriber(1, "abc@gmail.com", true, Plan.BASIC, 5));
+        dao.save(new Subscriber(2, "gill@gmail.com", true, Plan.FREE, 5));
+        dao.save(new Subscriber(3, "ali@gmail.com", false, Plan.BASIC, 0));
+        dao.save(new Subscriber(5, "lily@gmail.com", true, Plan.BASIC, 12));
+        dao.save(new Subscriber(31, "ali@gmail.com", false, Plan.FREE, 0));
+        dao.save(new Subscriber(4, "paul@gmail.com", true, Plan.PRO, 1));
 
-        for (Subscriber s : subscriberList) {
+        for (Subscriber s : dao.findAll()) {
             System.out.println("Subscriber: " + s);
         }
 
         System.out.println("\n-------------Results----------");
         System.out.println("Active Subscribers:");
-        System.out.println(processor.findSubscribers(subscriberList, activeSubscriber));
+        System.out.println(processor.findSubscribers(dao.findAll(), activeSubscriber));
         System.out.println("\nExpiring Subscription: ");
-        System.out.println(processor.findSubscribers(subscriberList, expiringSubscription));
+        System.out.println(processor.findSubscribers(dao.findAll(), expiringSubscription));
         System.out.println("\nActive and Expiring Subscriber: ");
-        System.out.println(processor.findSubscribers(subscriberList, activeAndExpiringSubscriber));
+        System.out.println(processor.findSubscribers(dao.findAll(), activeAndExpiringSubscriber));
         System.out.println("\nSubscriber by Plan - FREE: ");
-        System.out.println(processor.findSubscribers(subscriberList, subscriberByPlan));
+        System.out.println(processor.findSubscribers(dao.findAll(), subscriberByPlan));
         System.out.println("\nPaying Subscriber - BASIC or PRO: ");
-        System.out.println(processor.findSubscribers(subscriberList, payingSubscriber));
+        System.out.println(processor.findSubscribers(dao.findAll(), payingSubscriber));
         System.out.println("\nExtend Subscription: ");
-        System.out.println(processor.applyToMatching(subscriberList, subscriberByPlan, extendSubscription));
+        System.out.println(processor.applyToMatching(dao.findAll(), subscriberByPlan, extendSubscription));
         System.out.println("\nDeactivate Subscriber: ");
-        System.out.println(processor.applyToMatching(subscriberList, expiringSubscription, deactivateSubscriber));
+        System.out.println(processor.applyToMatching(dao.findAll(), expiringSubscription, deactivateSubscriber));
     }
 
 

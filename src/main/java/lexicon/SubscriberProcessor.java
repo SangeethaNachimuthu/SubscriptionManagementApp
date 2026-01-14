@@ -17,7 +17,8 @@ public class SubscriberProcessor {
         return filteredList;
     }
 
-    public List<Subscriber> applyToMatching(List<Subscriber> subscriberList, SubscriberFilter filter, SubscriberAction action) {
+    public List<Subscriber> applyToMatching(
+            List<Subscriber> subscriberList, SubscriberFilter filter, SubscriberAction action) {
 
         List<Subscriber> filteredList = new ArrayList<>();
 
