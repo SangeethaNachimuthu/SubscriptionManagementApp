@@ -1,0 +1,38 @@
+package lexicon;
+
+public class Subscriber {
+
+    private int id;
+    private String email;
+    private Plan plan;
+    private boolean active;
+    private int monthsRemaining;
+
+    public Subscriber(int id, String email, boolean active, Plan plan, int monthsRemaining) {
+        this.id = id;
+        this.email = email;
+        this.active = active;
+        this.plan = plan;
+        this.monthsRemaining = monthsRemaining;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public Plan getPlan() {
+        return plan;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public int getMonthsRemaining() {
+        return monthsRemaining;
+    }
+}
