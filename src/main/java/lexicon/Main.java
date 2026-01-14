@@ -6,7 +6,6 @@ import java.util.List;
 public class Main {
 
     public static SubscriberFilter activeSubscriber = (Subscriber::isActive);
-    public static SubscriberFilter inactiveSubscriber = (subscriber -> !subscriber.isActive());
     public static SubscriberFilter expiringSubscription = (subscriber ->
             subscriber.getMonthsRemaining() == 1 || subscriber.getMonthsRemaining() == 0);
     public static SubscriberFilter activeAndExpiringSubscriber = (subscriber ->
@@ -19,6 +18,8 @@ public class Main {
             subscriber.setMonthsRemaining(subscriber.getMonthsRemaining() + 1) ;
     public static SubscriberAction deactivateSubscriber = subscriber ->
             subscriber.setActive(false);
+
+    private static final SubscriberProcessor processor = new SubscriberProcessor();
 
     void main() {
 
@@ -37,45 +38,20 @@ public class Main {
 
         System.out.println("\n-------------Results----------");
         System.out.println("Active Subscribers:");
-        System.out.println(findSubscriber(subscriberList, activeSubscriber));
+        System.out.println(processor.findSubscribers(subscriberList, activeSubscriber));
         System.out.println("\nExpiring Subscription: ");
-        System.out.println(findSubscriber(subscriberList, expiringSubscription));
+        System.out.println(processor.findSubscribers(subscriberList, expiringSubscription));
         System.out.println("\nActive and Expiring Subscriber: ");
-        System.out.println(findSubscriber(subscriberList, activeAndExpiringSubscriber));
+        System.out.println(processor.findSubscribers(subscriberList, activeAndExpiringSubscriber));
         System.out.println("\nSubscriber by Plan - FREE: ");
-        System.out.println(findSubscriber(subscriberList, subscriberByPlan));
+        System.out.println(processor.findSubscribers(subscriberList, subscriberByPlan));
         System.out.println("\nPaying Subscriber - BASIC or PRO: ");
-        System.out.println(findSubscriber(subscriberList, payingSubscriber));
+        System.out.println(processor.findSubscribers(subscriberList, payingSubscriber));
         System.out.println("\nExtend Subscription: ");
-        System.out.println(findSubscriberAndUpdate(subscriberList, subscriberByPlan, extendSubscription));
+        System.out.println(processor.applyToMatching(subscriberList, subscriberByPlan, extendSubscription));
         System.out.println("\nDeactivate Subscriber: ");
-        System.out.println(findSubscriberAndUpdate(subscriberList, expiringSubscription, deactivateSubscriber));
-    }
-    public static List<Subscriber> findSubscriber(List<Subscriber> subscriberList, SubscriberFilter filter) {
-
-        List<Subscriber> filteredList = new ArrayList<>();
-
-        for (Subscriber s : subscriberList) {
-            if(filter.matches(s)) {
-                filteredList.add(s);
-            }
-        }
-        return filteredList;
+        System.out.println(processor.applyToMatching(subscriberList, expiringSubscription, deactivateSubscriber));
     }
 
-    public static List<Subscriber> findSubscriberAndUpdate(
-            List<Subscriber> subscriberList, SubscriberFilter filter, SubscriberAction action) {
-
-        List<Subscriber> filteredList = new ArrayList<>();
-
-        for (Subscriber s : subscriberList) {
-            if (filter.matches(s)) {
-                action.run(s);
-                filteredList.add(s);
-            }
-        }
-
-        return filteredList;
-    }
 
 }
